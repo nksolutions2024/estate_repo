@@ -2,6 +2,6 @@ import React from 'react'
 
 export default function App() {
   return (
-    <div>App</div>
+    <h1 className='text-green-500'>App</h1>
   )
 }
