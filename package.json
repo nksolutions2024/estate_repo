@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "this mern project for learning.<br>\r date:- July 7",
   "main": "index.js",
+  "type":"module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
