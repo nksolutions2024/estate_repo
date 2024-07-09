@@ -1,5 +1,6 @@
 import express from 'express';
 import mongoose from 'mongoose';
+import userRouter from './routes/user.route.js';
 
 mongoose.connect("mongodb+srv://sahand:sahand@mern-estatec.hjbi9hl.mongodb.net/?retryWrites=true&w=majority&appName=mern-estatec")
 .then(() => {
@@ -15,3 +16,5 @@ app.listen(3000,()=>{
     console.log('server at port 3000');
 }
 );
+
+app.use('/api/user', userRouter);
