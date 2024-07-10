@@ -13,7 +13,7 @@ mongoose.connect("mongodb+srv://sahand:sahand@mern-estatec.hjbi9hl.mongodb.net/?
 
 const app = express();
 
-// app.use(express.json());
+app.use(express.json());
 
 app.listen(3000,()=>{
     console.log('server at port 3000');
