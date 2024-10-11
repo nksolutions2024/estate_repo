@@ -68,10 +68,10 @@ const GoogleAddressSearch = () => {
 
   return (
     <div>
-      <h1>Place Search</h1>
+      <h1>Place Search1</h1>
       <input
         type="text"
-        placeholder="Search for a place4..."
+        placeholder="Search for a place5..."
         value={query}
         onChange={(e) => setQuery(e.target.value)}
       />
