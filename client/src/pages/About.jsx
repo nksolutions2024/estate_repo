@@ -1,45 +1,117 @@
-import React from 'react'
-
-export default function About() {
-  return (
-    <div>About</div>
-  )
-}
 // import React from 'react'
 
 // export default function About() {
 //   return (
-//     <div><p>about4</p>
-//       <div>about5</div>
-
-//       <button onClick={() => signIn("github")}>
-//         {/* <Image src={"./github.svg"} width={30} height={30} alt="logo" className='m-2'></Image> */}
-//         <span>Continue with GitHub1</span>
-//       </button>
-//     </div>
-
-
-
+//     <div>About6</div>
 //   )
 // }
 
-// import React from 'react';
 
-// const LoginButton = () => {
-//   const signIn = (provider) => {
-//     // Your custom authentication logic here
-//     // For example, redirect to GitHub OAuth page
-//     console.log(`Signing in with ${provider}`);
-//     // You could redirect to an OAuth provider URL or call a backend API
-//     window.location.href = `https://github.com/login/oauth/authorize?client_id=Ov23liS3AS7F33sDTbyX`;
-//   };
+// "use client"
 
+import React, { useState, useCallback, useEffect } from 'react';
+
+const GoogleAddressSearch = () => {
+  const [query, setQuery] = useState('');
+  const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const debounce = (func, delay) => {
+    let timeout;
+    return (...args) => {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func(...args), delay);
+    };
+  };
+
+  const fetchResults = async (query) => {
+    if (!query.trim()) {
+      setResults([]);
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+
+    try {
+      const apiKey = 'OCT8Oo19bcr3JkkGFuUZLDe4VW4wOXM1blmHWFSa';
+      const requestId = '24803f0d-8a94-4eaf-b1e3-0c5a67d0d757'; // Replace with your actual request ID
+
+      const response = await fetch(`https://api.olamaps.io/places/v1/autocomplete?input=${encodeURIComponent(query)}&api_key=${apiKey}`, {
+        method: 'GET',
+        headers: {
+          'X-Request-Id': requestId,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      setResults(data.predictions || []);  // Adjust based on the actual response structure
+    } catch (error) {
+      console.error("An error occurred while fetching data:", error);
+      setError('Failed to fetch results. Please try again.');
+      setResults([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const debouncedFetchResults = useCallback(debounce(fetchResults, 300), []);
+
+  useEffect(() => {
+    debouncedFetchResults(query);
+  }, [query]);
+
+  return (
+    <div>
+      <h1>Place Search</h1>
+      <input
+        type="text"
+        placeholder="Search for a place4..."
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+      />
+      {loading && <p>Loading...</p>}
+      {error && <p>{error}</p>}
+      <ul>
+        {results.map((result) => (
+          <li key={result.id}>
+            {result.description}  {/* Adjust based on Ola Maps response */}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+// export default GoogleAddressSearch;
+
+
+// import GoogleAddressSearch from '@/app/component/GoogleAddressSearch'
+
+// import React from 'react'
+// const AddNewListing = () => {
 //   return (
-//     <button onClick={() => signIn("github")} className="btn">
-//       Sign in with GitHub
-//     </button>
-//   );
-// };
+//       <div className='flex items-center justify-center'>
+//         <h2 className='font-bold'>Add New Listing</h2>
+//         <div className='' >
+//         <h2>Enter Address which you2 want</h2>
+        
+//         <GoogleAddressSearch/>
+//         </div>
+//     </div>
+//   )
+// }
+// export default AddNewListing
 
-// export default LoginButton;
-
+export default function About() {
+  return (
+    <div>
+      <GoogleAddressSearch/>
+    </div>
+  );
+}
